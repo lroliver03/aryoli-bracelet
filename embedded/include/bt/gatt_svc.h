@@ -11,6 +11,7 @@
 
 /* Public functions */
 void gatt_svr_register_callback(struct ble_gatt_register_ctxt *ctxt, void *arg);
+void gatt_svr_subscribe_callback(struct ble_gap_event *event);
 int gatt_svc_init();
 
 #endif // GATT_SVR_H

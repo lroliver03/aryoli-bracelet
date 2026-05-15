@@ -27,5 +27,12 @@ menu "Application Configurations"
     range 0 33
     help
       GPIO number (IOxx) of button characteristic from Automation IO service.
+  
+  config BUTTON_DEBOUNCE_DELAY_US
+    int "Button debounce delay"
+    default 200000
+    help
+      Button debounce delay in microsseconds.
+      Helps to avoid bouncing by forcing an interval of time between button presses.
 
 endmenu

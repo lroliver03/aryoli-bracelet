@@ -1,5 +1,6 @@
 /* Includes */
 #include "bt/gap.h"
+#include "bt/gatt_svc.h"
 #include "common.h"
 
 static const char *TAG = "GAP";
@@ -274,8 +275,8 @@ static int gap_event_handler(struct ble_gap_event *event, void *arg) {
       ESP_LOGI(TAG, "  prev_indicate: %d", event->subscribe.prev_indicate);
       ESP_LOGI(TAG, "  cur_indicate: %d", event->subscribe.cur_indicate);
       
-      // TODO: GATT subscribe event callback.
-      ESP_LOGD(TAG, "TODO: GATT subscription event callback");
+      // GATT subscribe event callback.
+      gatt_svr_subscribe_callback(event);
 
       break;
 

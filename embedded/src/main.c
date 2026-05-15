@@ -9,6 +9,7 @@
 #include "bt/gap.h"
 #include "bt/gatt_svc.h"
 #include "bt/char/led_char.h"
+#include "bt/char/button_char.h"
 
 /* Private variables */
 
@@ -64,6 +65,7 @@ void app_main() {
 
   // Initialize LED
   led_init();
+  button_init();
 
   // Initialize NVS flash
   esp_ret = nvs_flash_init(); // First attempt

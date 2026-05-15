@@ -3744,6 +3744,8 @@ CONFIG_GAP_LED_GPIO=2
 CONFIG_LED_GPIO=5
 # default:
 CONFIG_BUTTON_GPIO=19
+# default:
+CONFIG_BUTTON_DEBOUNCE_DELAY_US=200000
 # end of Application Configurations
 # end of Component config
 
