@@ -6,7 +6,9 @@
 #include "nvs_flash.h"
 
 #include "common.h"
-#include "gap.h"
+#include "bt/gap.h"
+#include "bt/gatt_svc.h"
+#include "bt/char/led_char.h"
 
 /* Private variables */
 
@@ -60,7 +62,10 @@ static void nimble_host_task(void *param) {
 void app_main() {
   esp_err_t esp_ret;
 
-    // Initialize NVS flash
+  // Initialize LED
+  led_init();
+
+  // Initialize NVS flash
   esp_ret = nvs_flash_init(); // First attempt
 
   // If no space or new version, erase and try again
@@ -87,16 +92,19 @@ void app_main() {
     abort();
   }
 
+  esp_ret = gatt_svc_init();
+  if (esp_ret != ESP_OK) {
+    ESP_LOGE(TAG, "Error (%d): Failed to initialize GATT server.", esp_ret);
+    abort();
+  }
+
   // Initialize NimBLE configuration
   nimble_host_config_init();
-
-  // Initialize application
-  xTaskCreate(nimble_host_task, "NimBLE Host", 4*1024, NULL, 5, NULL);
-
+  
   // Run thread
-
-  while (1) {
-    // ESP_LOGD(TAG, "This thread is empty. Go back to development.");
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
+  esp_ret = xTaskCreate(nimble_host_task, "NimBLE Host", 4*1024, NULL, 5, NULL);
+  if (esp_ret != pdPASS) {
+    ESP_LOGE(TAG, "Error (%d): Failed to create NimBLE host task.", esp_ret);
+    abort();
   }
 }

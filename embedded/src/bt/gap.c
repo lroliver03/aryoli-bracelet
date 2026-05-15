@@ -1,5 +1,5 @@
 /* Includes */
-#include "gap.h"
+#include "bt/gap.h"
 #include "common.h"
 
 static const char *TAG = "GAP";
