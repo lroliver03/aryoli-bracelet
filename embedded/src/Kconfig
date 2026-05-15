@@ -1,0 +1,31 @@
+menu "Application Configurations"
+
+  config USE_GAP_LED_GPIO
+    bool "Use GAP connection state LED"
+    default n
+    help
+      Whether to indicate the connection state on an LED or not.
+
+  config GAP_LED_GPIO
+    depends on USE_GAP_LED_GPIO
+    int "GAP LED GPIO number"
+    default 2
+    range 0 33
+    help
+      GPIO number (IOxx) of GAP connection state LED.
+
+  config LED_GPIO
+    int "Automation IO LED GPIO number"
+    default 5
+    range 0 33
+    help
+      GPIO number (IOxx) of LED characteristic from Automation IO service.
+
+  config BUTTON_GPIO
+    int "Automation IO button GPIO number"
+    default 19
+    range 0 33
+    help
+      GPIO number (IOxx) of button characteristic from Automation IO service.
+
+endmenu

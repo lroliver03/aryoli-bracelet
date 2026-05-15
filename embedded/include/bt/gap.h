@@ -2,6 +2,8 @@
 #define GAP_SVC_H
 
 /* Includes */
+// ESP APIs
+#include "driver/gpio.h"
 
 // NimBLE GAP APIs
 #include "host/ble_gap.h"
@@ -15,6 +17,7 @@
 #define BLE_GAP_ADV_RSP_ITVL_MS (BLE_GAP_ADV_ITVL_MS(500))
 #define BLE_GAP_ADV_ITVL_MIN_MS (BLE_GAP_ADV_ITVL_MS(500))
 #define BLE_GAP_ADV_ITVL_MAX_MS (BLE_GAP_ADV_ITVL_MS(510))
+#define GAP_LED_GPIO CONFIG_GAP_LED_GPIO
 
 /* Public functions prototypes */
 

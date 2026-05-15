@@ -7,7 +7,7 @@
 #include "sdkconfig.h"
 
 /* Defines */
-#define LED_GPIO 2
+#define LED_GPIO CONFIG_LED_GPIO
 
 /* Public function prototypes */
 uint8_t get_led_state();

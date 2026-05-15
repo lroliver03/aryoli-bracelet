@@ -1,14 +1,3 @@
-/**
- * @file led_char.c
- * @author Lucas Oliver
- * @brief BLE LED characteristic code file
- * @version 0.1
- * @date 2026-05-15
- * 
- * @copyright Copyright (c) 2026
- * 
- */
-
 #include "bt/char/led_char.h"
 #include "common.h"
 

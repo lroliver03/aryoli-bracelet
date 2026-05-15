@@ -17,6 +17,9 @@ static void print_connection_descriptor(struct ble_gap_conn_desc *descriptor);
 static int start_advertising();
 static int gap_event_handler(struct ble_gap_event *event, void *arg);
 
+static void gap_led_init();
+static void set_gap_led_state(uint8_t state);
+
 /* Private functions */
 
 /**
@@ -198,9 +201,12 @@ static int gap_event_handler(struct ble_gap_event *event, void *arg) {
           ESP_LOGE(TAG, "Error (%d): Failed to update connection parameters.", rc);
           return rc;
         }
+
+        set_gap_led_state(true);
       } else {
         // If connection failed, start advertising again.
         start_advertising();
+        set_gap_led_state(false);
       }
       break;
 
@@ -211,6 +217,7 @@ static int gap_event_handler(struct ble_gap_event *event, void *arg) {
 
       // Just go back to advertising.
       start_advertising();
+      set_gap_led_state(false);
 
       break;
 
@@ -288,6 +295,38 @@ static int gap_event_handler(struct ble_gap_event *event, void *arg) {
   return rc;
 }
 
+/**
+ * @brief Initializes GAP LED GPIO.
+ */
+static void gap_led_init() {
+
+  ESP_LOGI(TAG, "Initializing GAP LED...");
+
+  esp_err_t esp_ret;
+  esp_ret = gpio_reset_pin(GAP_LED_GPIO);
+  if (esp_ret != ESP_OK) {
+    ESP_LOGE(TAG, "Error (%d): Unable to reset GAP LED GPIO (IO%02d)", esp_ret, GAP_LED_GPIO);
+    return;
+  }
+
+  esp_ret = gpio_set_direction(GAP_LED_GPIO, GPIO_MODE_OUTPUT);
+  if (esp_ret != ESP_OK) {
+    ESP_LOGE(TAG, "Error (%d): Unable to set direction of GAP LED GPIO (IO%02d)", esp_ret, GAP_LED_GPIO);
+    return;
+  }
+
+  gpio_set_level(GAP_LED_GPIO, false);
+
+  ESP_LOGI(TAG, "GAP LED initialized! Using GPIO %d.", GAP_LED_GPIO);
+}
+
+/**
+ * @brief Set/clear the GAP LED state.
+ * 
+ * @param state GAP LED state.
+ */
+static void set_gap_led_state(uint8_t state) { gpio_set_level(GAP_LED_GPIO, state); }
+
 /* Public functions */
 
 /**
@@ -342,6 +381,9 @@ int gap_init() {
     ESP_LOGE(TAG, "Error (%d): Failed to set device name to %s", rc, DEVICE_NAME);
     return rc;
   }
+
+  gap_led_init();
+  set_gap_led_state(false);
 
   return rc;
 }
